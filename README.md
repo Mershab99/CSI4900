@@ -6,7 +6,7 @@ CSI 4900 Honours Project
 ## Team Members
 
 - Ayoub ()
-- Arthur Theeravich ()
+- Theeravich (Arthur) Trakulkajornsak (300192223)
 - Mershab Issadien (300027272)
 
 ## Usage
