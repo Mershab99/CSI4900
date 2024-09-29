@@ -2,6 +2,8 @@
 
 CSI 4900 Honours Project
 
+TLDR;
+We are finding out which words in each conversation caused the emotion felt by each person
 
 ## Team Members
 
