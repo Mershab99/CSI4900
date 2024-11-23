@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openwebui
+  namespace: argocd # Ensure this is the namespace where Argo CD is installed
+spec:
+  project: default
+  source:
+    repoURL: https://helm.openwebui.com
+    targetRevision: 4.0.0
+    chart: open-webui
+    helm:
+      valuesObject:
+        ingress:
+          enabled: true
+          host: chat.mershab.com
+          class: nginx
+        persistence:
+          enabled: true
+          size: 20Gi
+          storageClass: ceph-block
+        ollama:
+          runtimeClassName: nvidia
+          lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - |
+                      while ! /bin/ollama ps > /dev/null 2>&1; do
+                      sleep 5
+                      done
+                      /bin/ollama pull llama3
+# TODO: ADD OUR OWN MODEL HERE       
+          ollama:
+            gpu:
+              enabled: true
+              type: 'nvidia'
+              number: 1
+#            models:
+#            - llama3
+            #- qwen2.5-coder:3b
+  destination:
+    name: in-cluster
+  # Adjust this for remote clusters
+    namespace: openwebui
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+
