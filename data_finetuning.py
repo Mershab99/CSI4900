@@ -117,17 +117,20 @@ def main():
     Returns:
         None
     """
-    files = ["Subtask_1_train_real.json", "Subtask_1_dev.json"]
+    #files = ["Subtask_1_train_real.json", "Subtask_1_dev.json"]
+    files = ["Subtask_1_train.json"]
     for file in files:
         data = read_json(f"data/{file}")
         for_prompts = prepare4finetuning(data)
         if "train" in file:
             for_prompts = balancing(for_prompts)
-            prompts = prompts_construction(for_prompts)
-            write_jsonl("data/train_main_2.jsonl", prompts)
+            x = 0
+            #prompts = prompts_construction(for_prompts)
+            #write_jsonl("data/train_main_2.jsonl", prompts)
         else:
-            prompts = prompts_construction(for_prompts)
-            write_jsonl("data/test_main_2.jsonl", prompts)
+            pass
+            #prompts = prompts_construction(for_prompts)
+            #write_jsonl("data/test_main_2.jsonl", prompts)
 
 
 if __name__ == "__main__":
