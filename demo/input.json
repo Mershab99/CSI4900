@@ -1,0 +1,29 @@
+{
+    "conversation_ID": 1382,
+    "conversation": [
+        {"utterance_ID": 1, "text": "It is funny , my birthday was seven months ago .", "speaker": "Ross"},
+        {"utterance_ID": 2, "text": "So ?", "speaker": "Joey"},
+        {"utterance_ID": 3, "text": "So I am guessing you had an extra ticket ... and could not decide which one of you got to bring a date ? Huh ?", "speaker": "Ross"},
+        {"utterance_ID": 4, "text": "Well , are not we Mr . The ... Glass ... is ... Half ... Empty ?", "speaker": "Chandler"},
+        {"utterance_ID": 5, "text": "Oh , my God . Oh .", "speaker": "Ross"},
+        {"utterance_ID": 6, "text": "Is today the 20th ? October 20th ?", "speaker": "Ross"},
+        {"utterance_ID": 7, "text": "I was hoping you would not remember .", "speaker": "Monica"},
+        {"utterance_ID": 8, "text": "Oh .", "speaker": "Ross"},
+        {"utterance_ID": 9, "text": "What is wrong with the 20th ?", "speaker": "Joey"},
+        {"utterance_ID": 10, "text": "Eleven days before Halloween ? All the good costumes are gone ?", "speaker": "Chandler"},
+        {"utterance_ID": 11, "text": "Today the day Carol and I ... first consummated ... our physical relationship .", "speaker": "Ross"},
+        {"utterance_ID": 12, "text": "We had sex .", "speaker": "Ross"},
+        {"utterance_ID": 13, "text": "You know what ? I better pass on the game .", "speaker": "Ross"},
+        {"utterance_ID": 14, "text": "I think I am just gonna go home and think about my ex ... wife and her lesbian lover .", "speaker": "Ross"},
+        {"utterance_ID": 15, "text": "The hell with hockey . Let us all do that .", "speaker": "Joey"},
+        {"utterance_ID": 16, "text": "Come on , Ross . You , me , Joey , ice ? Guys night out ? Come on , what do you say , big guy ? Huh ? Huh ? Huh ?", "speaker": "Chandler"},
+        {"utterance_ID": 17, "text": "What are you doing ?", "speaker": "Ross"},
+        {"utterance_ID": 18, "text": "I have no idea .", "speaker": "Chandler"},
+        {"utterance_ID": 19, "text": "Come on , Ross .", "speaker": "Joey"},
+        {"utterance_ID": 20, "text": "All right , all right . Maybe it will take my mind off it .", "speaker": "Ross"},
+        {"utterance_ID": 21, "text": "You promise to buy me a big foam finger ?", "speaker": "Ross"},
+        {"utterance_ID": 22, "text": "You got it .", "speaker": "Joey"},
+        {"utterance_ID": 23, "text": "All right .", "speaker": "Ross"},
+        {"utterance_ID": 24, "text": "Look , look , look . My first paycheck .", "speaker": "Rachel"}
+    ]
+}
