@@ -4,27 +4,53 @@ import torch
 from torch_geometric.data import Data, Dataset
 
 from transformers import DebertaTokenizer, DebertaModel
+from transformers import RobertaTokenizer, RobertaModel
 from transformers import BertTokenizer, BertModel
 
 from tqdm.auto import tqdm
 
+DEVICE = torch.device("cpu")
+# DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-TRANSFORMER = 'DEBERTA'
+TRANSFORMER = 'BERT'
 
 
 match TRANSFORMER:
-    case 'DEBERTA':
-        TOKENIZER = DebertaTokenizer.from_pretrained("microsoft/deberta-base")
-        MODEL = DebertaModel.from_pretrained("microsoft/deberta-base", output_hidden_states=True).to(DEVICE)
-        print("DEBERTA MODEL")
     case 'BERT':
+        """
+        - Limited training datasets from BookCorpus and English Wikipedia
+        - A baseline approach to emotion-cause extraction
+        - More efficient than other models for most tasks, but ends up being less practical for emotion-case pair extraction
+            - BERT model struggles with determining dependencies and relationships at a long distance which is necessary for emotion-cause pair extraction
+            - Better suited for simpler tasks such as next-sentence prediction
+        """
         TOKENIZER = BertTokenizer.from_pretrained("bert-base-uncased")
         MODEL = BertModel.from_pretrained("bert-base-uncased", output_hidden_states=True).to(DEVICE)
         print("BERT MODEL")
-
-
+    case 'ROBERTA':
+        """
+        - A BERT variant trained on larger datasets from BookCorpus, English Wikipedia, CC-News Articles, OpenWebText, etc.
+        - Generally performs better than BERT on NLP tasks due to the enhanced training
+        - Still struggles with position-handling to a similar degree as the BERT model
+            - Yet is more efficient than BERT for this task due to its pretraining
+        """
+        TOKENIZER = RobertaTokenizer.from_pretrained("FacebookAI/roberta-base")
+        MODEL = RobertaModel.from_pretrained("FacebookAI/roberta-base", output_hidden_states=True).to(DEVICE)
+        print("ROBERTA MODEL")
+    case 'DEBERTA':
+        """
+        - Similar large-scale training data as RoBERTa
+        - Best suited for complex cause-effect relationship tasks such as emotion-case pair extraction
+        - Disentangled position-handling means DeBERTa better identifies distant relationships between sentences
+            - The semantic meaning of words in each sentence compared alongside their relative position to determine a whether a relationship exists
+            - Requires a much heavier computaitonal load however
+        """
+        TOKENIZER = DebertaTokenizer.from_pretrained("microsoft/deberta-base")
+        MODEL = DebertaModel.from_pretrained("microsoft/deberta-base", output_hidden_states=True).to(DEVICE)
+        print("DEBERTA MODEL")
+    
+ 
 EMOTIONS = ["neutral", "anger", "disgust", "fear", "joy", "sadness", "surprise"]
 EMOTIONS_ONE_HOT = torch.zeros(len(EMOTIONS), len(EMOTIONS)).to(DEVICE)
 for i, emotion in enumerate(EMOTIONS):
