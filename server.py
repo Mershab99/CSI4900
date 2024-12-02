@@ -6,7 +6,7 @@ import json
 with open("demo/output.json", "r") as dummy_data_file:
     dummy_data = json.load(dummy_data_file)
 
-dummy_output_data = dummy_data["conversation"]
+dummy_output_data = dummy_data
 
 # Dummy inference function
 def inference(conversation_json):
@@ -19,15 +19,65 @@ def inference(conversation_json):
 
 
 # Function to display conversation as a chat
-def display_chat(conversation_json):
+# Function to display conversation as a chat
+def display_chat(conversation_json, emotion_cause_pairs):
     st.subheader("Conversation Chat")
-    for utterance in conversation_json:
-        # Simulate the conversation in chat bubbles
-        message = st.chat_message(utterance["speaker"], avatar="human")
 
-        message.markdown(f'''
-            ***{utterance["speaker"]}:*** {utterance["text"]}
-        ''')
+    # Build a lookup table for emotion-cause pairs
+    cause_lookup = {
+        pair[0].split('_')[0]: pair[1] for pair in emotion_cause_pairs
+    }
+
+    # Define color coding for emotions
+    emotion_colors = {
+        "anger": "#FF4500",
+        "disgust": "#8B4513",
+        "fear": "#8A2BE2",
+        "joy": "#FFD700",
+        "sadness": "#1E90FF",
+        "surprise": "#32CD32",
+    }
+
+    for utterance in conversation_json:
+        utterance_id = str(utterance["utterance_ID"])
+        text = utterance["text"]
+        speaker = utterance["speaker"]
+        emotion = utterance.get("emotion", "neutral")  # Default to neutral if no emotion
+        color = emotion_colors.get(emotion, "#000000")  # Default to black for undefined emotions
+
+        # Render the main utterance with a background color
+        message = st.chat_message(speaker, avatar="human")
+        message.markdown(
+            f'<div style="background-color:{color}; padding: 10px; border-radius: 5px;">'
+            f"<strong>{speaker}:</strong> {text}</div>",
+            unsafe_allow_html=True
+        )
+
+        # Check if this utterance has an emotion-cause pair
+        if utterance_id in cause_lookup:
+            cause_info = cause_lookup[utterance_id]
+            cause_utterance_id, start_idx, end_idx = cause_info.split('_')
+            start_idx, end_idx = int(start_idx), int(end_idx)
+
+            # Find the cause utterance
+            cause_utterance = next(
+                (u for u in conversation_json if str(u["utterance_ID"]) == cause_utterance_id),
+                None
+            )
+
+            if cause_utterance:
+                cause_text = cause_utterance["text"]
+                cause_speaker = cause_utterance["speaker"]
+                # Highlight the cause span in red and italicize the rest
+                highlighted_cause_text = (
+                    f"{cause_text[:start_idx]}"
+                    f":red[{cause_text[start_idx:end_idx]}]"
+                    f"{cause_text[end_idx:]}"
+                )
+                message.markdown(
+                    f"  ***{cause_speaker}:*** *{highlighted_cause_text}*",
+                    unsafe_allow_html=True
+                )
 
 
 def process_bulk_input(bulk_text):
@@ -79,7 +129,7 @@ if st.session_state.step_conversation:
         result = inference(st.session_state.step_conversation)
 
         #display_chat(result["conversation"])
-        display_chat(dummy_output_data)
+        display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
 
 st.subheader("Option 2: Bulk Input")
 # Bulk input form
@@ -95,6 +145,6 @@ if st.button("Process and Run Inference on Bulk Input"):
             st.json(conversation)
             result = inference(conversation)
             #display_chat(result["conversation"])
-            display_chat(dummy_output_data)
+            display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
     else:
         st.error("Please enter some text for bulk input.")
