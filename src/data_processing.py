@@ -13,7 +13,8 @@ DEVICE = torch.device("cpu")
 # DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-TRANSFORMER = 'BERT'
+# 'BERT', 'DEBERTA', 'ROBERTA'
+TRANSFORMER = 'DEBERTA'
 
 
 match TRANSFORMER:

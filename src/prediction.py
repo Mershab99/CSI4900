@@ -9,7 +9,8 @@ from tqdm.auto import tqdm
 from data_processing import read_json, write_json, get_dataset, TRANSFORMER
 from graph_models import CauseExtractor
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cpu")
+# DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
 def get_span_position(span: str, utterance: str) -> list:
