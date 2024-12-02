@@ -69,13 +69,8 @@ def display_chat(conversation_json, emotion_cause_pairs):
                 cause_text = cause_utterance["text"]
                 cause_speaker = cause_utterance["speaker"]
                 # Highlight the cause span in red and italicize the rest
-                highlighted_cause_text = (
-                    f"{cause_text[:start_idx]}"
-                    f":red[{cause_text[start_idx:end_idx]}]"
-                    f"{cause_text[end_idx:]}"
-                )
                 message.markdown(
-                    f"  ***{cause_speaker}:*** *{highlighted_cause_text}*",
+                    f"  ***{cause_speaker}:*** *:red[{cause_text}]*",
                     unsafe_allow_html=True
                 )
 
