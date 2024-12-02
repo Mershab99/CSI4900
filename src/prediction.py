@@ -2,10 +2,11 @@ import string
 
 import torch
 import torch.nn.functional as F
+
 from torch_geometric.loader import DataLoader
 from tqdm.auto import tqdm
 
-from data_processing import read_json, write_json, get_dataset
+from data_processing import read_json, write_json, get_dataset, TRANSFORMER
 from graph_models import CauseExtractor
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -106,7 +107,7 @@ def main() -> None:
     test_dataset = get_dataset(test_data, test=True)
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
     model = CauseExtractor().to(DEVICE)
-    model.load_state_dict(torch.load("models/best_model.pth"))
+    model.load_state_dict(torch.load("models/new_best_model_" + TRANSFORMER + ".pth", map_location=torch.device('cpu')))
     causes_emotions = get_predictions(model, test_loader)
 
     for i, dialog in enumerate(tqdm(test_data)):
@@ -119,7 +120,7 @@ def main() -> None:
             emotion_type = dialog["conversation"][emotion_utterance_id - 1]["emotion"]
             dialog["emotion-cause_pairs"].append([f"{emotion_utterance_id}_{emotion_type}", f"{cause_utterance_id}_{cause_span[0]}_{cause_span[1]}"])
 
-    write_json("data/Subtask_1_pred.json", test_data)
+    write_json("data/Subtask_1_pred_" + TRANSFORMER + ".json", test_data)
 
 if __name__ == "__main__":
     main()
