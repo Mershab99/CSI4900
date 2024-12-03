@@ -49,14 +49,4 @@ Selector labels
 app.kubernetes.io/name: {{ include "csi4900-demo.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "csi4900-demo.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "csi4900-demo.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}
