@@ -9,8 +9,7 @@ RUN pip3 install --no-cache-dir --upgrade \
 
 RUN apt-get update && apt-get install -y \
     build-essential \
-    software-properties-common \
-    git
+    software-properties-common
 
 USER appuser
 WORKDIR /home/appuser
