@@ -2,8 +2,7 @@ import streamlit as st
 import json
 
 
-
-with open("demo/output.json", "r") as dummy_data_file:
+with open("/home/appuser/app/demo/output.json", "r") as dummy_data_file:
     dummy_data = json.load(dummy_data_file)
 
 dummy_output_data = dummy_data
