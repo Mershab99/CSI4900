@@ -27,6 +27,6 @@
         {"utterance_ID": 24, "text": "Look , look , look . My first paycheck .", "speaker": "Rachel", "emotion": "joy"}
     ],
     "emotion-cause_pairs": [
-        ["24_joy", "24_0_9"]
+        ["24_joy", "12_0_9"]
     ]
 }
