@@ -5,3 +5,4 @@ transformers==4.35.2
 torch==2.5.1
 tqdm==4.65.0
 openai==1.11.1
+streamlit
