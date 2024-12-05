@@ -95,6 +95,7 @@ def get_predictions(model: CauseExtractor, test_loader: DataLoader) -> list:
 
 
 def make_prediction(convo_json):
+    print(convo_json)
     test_dataset = get_dataset(convo_json, test=True)
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
     model = CauseExtractor().to(DEVICE)
