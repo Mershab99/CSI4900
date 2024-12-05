@@ -2,16 +2,20 @@ import streamlit as st
 import json
 
 from prediction import make_prediction
+from emotion_annotation import emotion_prediction
 
 
 # Dummy inference function
 def inference(conversation):
     # For now, just return a placeholder JSON
 
-    return make_prediction([{
+    convo_json = [{
         "conversation": conversation,
         "conversation_ID": 999
-    }])
+    }]
+    emotion_prediction(convo_json)
+
+    return make_prediction(convo_json)
 
 
 # Function to display conversation as a chat

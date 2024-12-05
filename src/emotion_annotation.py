@@ -1,9 +1,13 @@
 import json
+import os
 
 from openai import OpenAI
 from tqdm.auto import tqdm
 
-api_key = "" # your API key here
+api_key = os.getenv("OPENAI_API_KEY") # your API key here
+if not api_key:
+    raise ValueError("Environment variable OPENAI_API_KEY not set")
+
 client = OpenAI(api_key=api_key)
 with open("data/prompt.txt", "r") as f:
     COMMON_POMPT = f.read()
@@ -75,7 +79,6 @@ def get_emotion_from_gpt(cause_edu_text: str, emotion_utterance_text: str) -> st
 def emotion_prediction(dialogs: list) -> None:
     """
     Predicts emotions for each turn in a list of dialogs.
-
     Args:
         dialogs (list): A list of dialogs, where each dialog is a dictionary containing a "conversation" key.
 
@@ -88,19 +91,3 @@ def emotion_prediction(dialogs: list) -> None:
                 turn["emotion"] = get_emotion_from_gpt("", turn["text"])
             else:
                 turn["emotion"] = get_emotion_from_gpt(dialog["conversation"][i-1]["text"], turn["text"])
-    
-def main() -> None:
-    """
-    The main function of the emotion_annotation module.
-    
-    Reads the JSON data from "data/Subtask_1_test.json",
-    performs emotion prediction on the data,
-    and writes the updated data to "data/Subtask_1_test_gpt.json".
-    """
-    data = read_json("data/unlabeled_testing_data.json")
-    emotion_prediction(data)
-    write_json(data, "data/predicted_testing_data.json")
-
-if __name__ == "__main__":
-    main()
-
