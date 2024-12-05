@@ -39,7 +39,7 @@ spec:
           - name: OPENAI_API_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ include "csi4900-demo.fullname" . }}
+                name: demo-secrets
                 key: OPENAI_API_KEY
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
