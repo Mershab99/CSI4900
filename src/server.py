@@ -8,10 +8,10 @@ from prediction import make_prediction
 def inference(conversation):
     # For now, just return a placeholder JSON
 
-    return make_prediction({
+    return make_prediction([{
         "conversation": conversation,
         "conversation_ID": 999
-    })
+    }])
 
 
 # Function to display conversation as a chat
