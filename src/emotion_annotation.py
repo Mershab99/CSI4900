@@ -4,7 +4,7 @@ import os
 from openai import OpenAI
 from tqdm.auto import tqdm
 
-from server import HOME_DIR
+from utils import HOME_DIR
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 

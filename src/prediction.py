@@ -7,7 +7,7 @@ from tqdm.auto import tqdm
 
 from data_processing import get_dataset, TRANSFORMER
 from graph_models import CauseExtractor
-from server import HOME_DIR
+from utils import HOME_DIR
 
 DEVICE = torch.device("cpu")
 # DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -113,4 +113,5 @@ def make_prediction(convo_json):
             dialog["emotion-cause_pairs"].append(
                 [f"{emotion_utterance_id}_{emotion_type}", f"{cause_utterance_id}_{cause_span[0]}_{cause_span[1]}"])
 
+    print(convo_json)
     return convo_json

@@ -1,12 +1,8 @@
 import streamlit as st
 import json
 
-#HOME_DIR = "/home/appuser/app/"
-HOME_DIR = "./"
-
 from prediction import make_prediction
 from emotion_annotation import emotion_prediction
-
 
 
 # Dummy inference function
@@ -127,7 +123,7 @@ if st.session_state.step_conversation:
         result = inference(st.session_state.step_conversation)
 
         # display_chat(result["conversation"])
-        display_chat(result["conversation"], result["emotion-cause_pairs"])
+        display_chat(result[0]["conversation"], result[0]["emotion-cause_pairs"])
         #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
 
 st.subheader("Option 2: Bulk Input")
@@ -143,7 +139,7 @@ if st.button("Process and Run Inference on Bulk Input"):
             st.write("Parsed Conversation:")
             st.json(conversation)
             result = inference(conversation)
-            display_chat(result["conversation"], result["emotion-cause_pairs"])
+            display_chat(result[0]["conversation"], result[0]["emotion-cause_pairs"])
             #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
     else:
         st.error("Please enter some text for bulk input.")

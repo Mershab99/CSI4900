@@ -7,7 +7,7 @@ from sklearn.metrics import f1_score
 
 from data_processing import read_json, get_dataset, get_cause_relations, TRANSFORMER
 from graph_models import CauseExtractor
-from server import HOME_DIR
+from utils import HOME_DIR
 
 
 DEVICE = torch.device("cpu")
