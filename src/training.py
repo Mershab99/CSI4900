@@ -7,6 +7,7 @@ from sklearn.metrics import f1_score
 
 from data_processing import read_json, get_dataset, get_cause_relations, TRANSFORMER
 from graph_models import CauseExtractor
+from server import HOME_DIR
 
 
 DEVICE = torch.device("cpu")
@@ -64,13 +65,13 @@ def train_model() -> None:
             metric = f1_score(y_golds, y_preds)
             if metric > best_metric:
                 best_metric = metric
-                torch.save(model.state_dict(), "models/new_best_model_" + TRANSFORMER + ".pth")
+                torch.save(model.state_dict(), f"{HOME_DIR}models/new_best_model_" + TRANSFORMER + ".pth")
             if epoch % 10 == 0:
                 print(
                     f"""Epoch {epoch+1}/{num_epochs}, Train Loss: {round(loss.item(), 3)}, Validation F1: {round(metric, 3)}"""
                 )
     print("Best Validation F1:", round(best_metric, 3))
-    model.load_state_dict(torch.load("models/new_best_model_" + TRANSFORMER + ".pth"))
+    model.load_state_dict(torch.load(f"{HOME_DIR}models/new_best_model_" + TRANSFORMER + ".pth"))
 
 
 if __name__ == "__main__":

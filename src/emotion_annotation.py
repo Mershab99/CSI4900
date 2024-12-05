@@ -4,10 +4,11 @@ import os
 from openai import OpenAI
 from tqdm.auto import tqdm
 
+from server import HOME_DIR
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-with open("/home/appuser/app/data/prompt.txt", "r") as f:
+with open(f"{HOME_DIR}data/prompt.txt", "r") as f:
     COMMON_POMPT = f.read()
 
 

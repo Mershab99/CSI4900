@@ -5,6 +5,8 @@ from prediction import make_prediction
 from emotion_annotation import emotion_prediction
 
 
+HOME_DIR = "/home/appuser/app/"
+
 # Dummy inference function
 def inference(conversation):
     # For now, just return a placeholder JSON
