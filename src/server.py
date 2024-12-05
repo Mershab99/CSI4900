@@ -1,20 +1,15 @@
 import streamlit as st
-import json
 
-from prediction import make_prediction
 from emotion_annotation import emotion_prediction
+from prediction import make_prediction
 
 
-# Dummy inference function
 def inference(conversation):
-    # For now, just return a placeholder JSON
-
     convo_json = [{
         "conversation": conversation,
         "conversation_ID": 999
     }]
     emotion_prediction(convo_json)
-
     return make_prediction(convo_json)
 
 
@@ -67,9 +62,11 @@ def display_chat(conversation_json, emotion_cause_pairs):
             if cause_utterance:
                 cause_text = cause_utterance["text"]
                 cause_speaker = cause_utterance["speaker"]
-                # Highlight the cause span in red and italicize the rest
-                message.markdown(
-                    f"  ***{cause_speaker}:*** *:red[{cause_text}]*",
+                # Display the cause without duplicating the main utterance
+                st.markdown(
+                    f'<div style="margin-left: 20px;">'
+                    f"<em>Cause Pair:</em> <strong>{cause_speaker}:</strong> <span style='color:red;'>{cause_text}</span>"
+                    f"</div>",
                     unsafe_allow_html=True
                 )
 
@@ -117,14 +114,11 @@ with st.form("step_form", clear_on_submit=True):
             st.error("Both speaker and utterance must be provided.")
 
 if st.session_state.step_conversation:
-    st.write("Current Conversation:")
-    st.json(st.session_state.step_conversation)
+    st.write("Current Conversation (JSON):")
+    st.json(st.session_state.step_conversation)  # Show JSON for clarity
     if st.button("Run Inference on Step-by-Step Conversation"):
         result = inference(st.session_state.step_conversation)
-
-        # display_chat(result["conversation"])
         display_chat(result[0]["conversation"], result[0]["emotion-cause_pairs"])
-        #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
 
 st.subheader("Option 2: Bulk Input")
 # Bulk input form
@@ -136,10 +130,36 @@ if st.button("Process and Run Inference on Bulk Input"):
     if bulk_input.strip():
         conversation = process_bulk_input(bulk_input)
         if conversation:
-            st.write("Parsed Conversation:")
-            st.json(conversation)
+            st.write("Parsed Conversation (JSON):")
+            st.json(conversation)  # Show JSON for clarity
             result = inference(conversation)
             display_chat(result[0]["conversation"], result[0]["emotion-cause_pairs"])
-            #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
     else:
         st.error("Please enter some text for bulk input.")
+
+st.divider()
+st.subheader("Emotion Color Legend")
+
+emotion_colors = {
+    "anger": "#FF4500",
+    "disgust": "#8B4513",
+    "fear": "#8A2BE2",
+    "joy": "#FFD700",
+    "sadness": "#1E90FF",
+    "surprise": "#32CD32",
+    "neutral": "#000000",
+}
+
+# Display the legend
+legend_html = "".join(
+    f'<div style="display: flex; align-items: center; margin-bottom: 5px;">'
+    f'<div style="width: 20px; height: 20px; background-color: {color}; margin-right: 10px; border-radius: 3px;"></div>'
+    f'<span style="font-size: 16px;">{emotion.capitalize()}</span>'
+    f'</div>'
+    for emotion, color in emotion_colors.items()
+)
+
+st.markdown(
+    f'<div style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">{legend_html}</div>',
+    unsafe_allow_html=True
+)
