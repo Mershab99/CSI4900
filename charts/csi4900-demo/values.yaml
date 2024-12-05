@@ -6,11 +6,14 @@ replicaCount: 1
 
 image:
   repository: mershab99/csi4900demo
-  pullPolicy: IfNotPresent
+    #pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v2-demo"
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: reg-secret
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -105,3 +108,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+secrets:
+  OPENAI_API_KEY: "API_KEY"

@@ -35,6 +35,12 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "csi4900-demo.fullname" . }}
+                key: OPENAI_API_KEY
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
