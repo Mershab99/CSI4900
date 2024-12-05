@@ -4,12 +4,8 @@ import os
 from openai import OpenAI
 from tqdm.auto import tqdm
 
-api_key = os.getenv("OPENAI_API_KEY")  # your API key here
-print(api_key)
-if not api_key:
-    raise ValueError("Environment variable OPENAI_API_KEY not set")
 
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 with open("data/prompt.txt", "r") as f:
     COMMON_POMPT = f.read()
