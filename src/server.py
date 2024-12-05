@@ -5,10 +5,13 @@ from prediction import make_prediction
 
 
 # Dummy inference function
-def inference(conversation_json):
+def inference(conversation):
     # For now, just return a placeholder JSON
 
-    return make_prediction(conversation_json)
+    return make_prediction({
+        "conversation": conversation,
+        "conversation_ID": 999
+    })
 
 
 # Function to display conversation as a chat
