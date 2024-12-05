@@ -1,0 +1,13 @@
+- Explain the SemEval problem
+- Our initial framing/approach
+- Finding Petkatz
+  - How this influenced our approach
+  - Gave us direction
+  - Something to iterate off of
+- Plan of attack
+- Dividing work
+- Fine tuning model
+- Cause pair extraction
+- Creating the demo and putting it together
+- Demo Time!
+- QnA?

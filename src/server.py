@@ -1,23 +1,16 @@
 import streamlit as st
 import json
 
+from prediction import make_prediction
 
-with open("/home/appuser/app/demo/output.json", "r") as dummy_data_file:
-    dummy_data = json.load(dummy_data_file)
-
-dummy_output_data = dummy_data
 
 # Dummy inference function
 def inference(conversation_json):
     # For now, just return a placeholder JSON
-    return {
-        "conversation_ID": 1,
-        "conversation": conversation_json,
-        "emotion_cause_pairs": [["dummy_joy", "dummy_cause"]]
-    }
+
+    return make_prediction(conversation_json)
 
 
-# Function to display conversation as a chat
 # Function to display conversation as a chat
 def display_chat(conversation_json, emotion_cause_pairs):
     st.subheader("Conversation Chat")
@@ -122,8 +115,9 @@ if st.session_state.step_conversation:
     if st.button("Run Inference on Step-by-Step Conversation"):
         result = inference(st.session_state.step_conversation)
 
-        #display_chat(result["conversation"])
-        display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
+        # display_chat(result["conversation"])
+        display_chat(result["conversation"], result["emotion-cause_pairs"])
+        #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
 
 st.subheader("Option 2: Bulk Input")
 # Bulk input form
@@ -138,7 +132,7 @@ if st.button("Process and Run Inference on Bulk Input"):
             st.write("Parsed Conversation:")
             st.json(conversation)
             result = inference(conversation)
-            #display_chat(result["conversation"])
-            display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
+            display_chat(result["conversation"], result["emotion-cause_pairs"])
+            #display_chat(dummy_output_data["conversation"], dummy_output_data["emotion-cause_pairs"])
     else:
         st.error("Please enter some text for bulk input.")

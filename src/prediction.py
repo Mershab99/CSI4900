@@ -13,6 +13,7 @@ DEVICE = torch.device("cpu")
 # DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
+
 def get_span_position(span: str, utterance: str) -> list:
     """
     Get the position of a span within an utterance.
@@ -29,11 +30,12 @@ def get_span_position(span: str, utterance: str) -> list:
     cause_token = span.split()
     utterance_token = utterance.split()
     for wi in range(len(utterance_token)):
-        if (wi+len(cause_token))<=len(utterance_token) and utterance_token[wi:wi+len(cause_token)] == cause_token:
+        if (wi + len(cause_token)) <= len(utterance_token) and utterance_token[wi:wi + len(cause_token)] == cause_token:
             begin_id = wi
-            end_id = wi+len(cause_token)
+            end_id = wi + len(cause_token)
             break
-    return [begin_id, end_id] # start from 0, [begin_id, end_id)
+    return [begin_id, end_id]  # start from 0, [begin_id, end_id)
+
 
 def clean_span(span: str) -> str:
     """
@@ -55,6 +57,7 @@ def clean_span(span: str) -> str:
             if span[-1] in string.punctuation:
                 span = span[:-1]
     return span
+
 
 def get_predictions(model: CauseExtractor, test_loader: DataLoader) -> list:
     """
@@ -90,28 +93,15 @@ def get_predictions(model: CauseExtractor, test_loader: DataLoader) -> list:
                 pred_pairs.append(dialog_pred_pairs)
     return pred_pairs
 
-def main() -> None:
-    """
-    Main function that performs the prediction task.
 
-    Reads the test data from a JSON file, creates a test dataset, loads the trained model,
-    generates predictions for the test data, and updates the test data with the predicted
-    emotion-cause pairs. Finally, writes the updated test data to a JSON file.
-
-    Args:
-        None
-
-    Returns:
-        None
-    """
-    test_data = read_json("data/Subtask_1_test_gpt.json")
-    test_dataset = get_dataset(test_data, test=True)
+def make_prediction(convo_json):
+    test_dataset = get_dataset(convo_json, test=True)
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
     model = CauseExtractor().to(DEVICE)
     model.load_state_dict(torch.load("models/new_best_model_" + TRANSFORMER + ".pth", map_location=torch.device('cpu')))
     causes_emotions = get_predictions(model, test_loader)
 
-    for i, dialog in enumerate(tqdm(test_data)):
+    for i, dialog in enumerate(tqdm(convo_json)):
         dialog["emotion-cause_pairs"] = []
         for cause, emotion in causes_emotions[i]:
             emotion_utterance_id = dialog["conversation"][emotion]["utterance_ID"]
@@ -119,9 +109,7 @@ def main() -> None:
             cause_utterance_id = dialog["conversation"][cause]["utterance_ID"]
             cause_span = get_span_position(clean_span(cause_utterance_text), cause_utterance_text)
             emotion_type = dialog["conversation"][emotion_utterance_id - 1]["emotion"]
-            dialog["emotion-cause_pairs"].append([f"{emotion_utterance_id}_{emotion_type}", f"{cause_utterance_id}_{cause_span[0]}_{cause_span[1]}"])
+            dialog["emotion-cause_pairs"].append(
+                [f"{emotion_utterance_id}_{emotion_type}", f"{cause_utterance_id}_{cause_span[0]}_{cause_span[1]}"])
 
-    write_json("data/Subtask_1_pred_" + TRANSFORMER + ".json", test_data)
-
-if __name__ == "__main__":
-    main()
+    return convo_json
