@@ -1,7 +1,8 @@
 import streamlit as st
 import json
 
-HOME_DIR = "/home/appuser/app/"
+#HOME_DIR = "/home/appuser/app/"
+HOME_DIR = "./"
 
 from prediction import make_prediction
 from emotion_annotation import emotion_prediction
