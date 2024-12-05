@@ -7,7 +7,7 @@ from tqdm.auto import tqdm
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-with open("data/prompt.txt", "r") as f:
+with open("/home/appuser/app/data/prompt.txt", "r") as f:
     COMMON_POMPT = f.read()
 
 
