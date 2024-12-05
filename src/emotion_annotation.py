@@ -4,13 +4,16 @@ import os
 from openai import OpenAI
 from tqdm.auto import tqdm
 
-api_key = os.getenv("OPENAI_API_KEY") # your API key here
+api_key = os.getenv("OPENAI_API_KEY")  # your API key here
+print(api_key)
 if not api_key:
     raise ValueError("Environment variable OPENAI_API_KEY not set")
 
 client = OpenAI(api_key=api_key)
+
 with open("data/prompt.txt", "r") as f:
     COMMON_POMPT = f.read()
+
 
 def read_json(file_name: str) -> list:
     """
@@ -24,6 +27,7 @@ def read_json(file_name: str) -> list:
     """
     with open(file_name, "r") as f:
         return json.load(f)
+
 
 def write_json(data, file_path):
     """
@@ -39,9 +43,10 @@ def write_json(data, file_path):
     with open(file_path, "w") as f:
         json.dump(data, f)
 
+
 # it is our fine-tuned model tag, you have to insert your own tag here,
 # we cannot share our model due to the OpenAI policy
-def get_completion(prompt: str, model: str="ft:gpt-4o-mini-2024-07-18:personal:emotion-v2:ANj5R7eY") -> str:
+def get_completion(prompt: str, model: str = "ft:gpt-4o-mini-2024-07-18:personal:emotion-v2:ANj5R7eY") -> str:
     """
     Generates a completion based on the given prompt using the fine-tuned OpenAI GPT-4o mini model.
 
@@ -60,6 +65,7 @@ def get_completion(prompt: str, model: str="ft:gpt-4o-mini-2024-07-18:personal:e
     )
     return response.choices[0].message.content
 
+
 def get_emotion_from_gpt(cause_edu_text: str, emotion_utterance_text: str) -> str:
     """
     Retrieves the emotion from GPT model based on the cause educational text and emotion utterance text.
@@ -75,7 +81,8 @@ def get_emotion_from_gpt(cause_edu_text: str, emotion_utterance_text: str) -> st
     prompt = prompt.replace("UTT_2", emotion_utterance_text)
     result = get_completion(prompt)
     return result
-    
+
+
 def emotion_prediction(dialogs: list) -> None:
     """
     Predicts emotions for each turn in a list of dialogs.
@@ -90,4 +97,4 @@ def emotion_prediction(dialogs: list) -> None:
             if i == 0:
                 turn["emotion"] = get_emotion_from_gpt("", turn["text"])
             else:
-                turn["emotion"] = get_emotion_from_gpt(dialog["conversation"][i-1]["text"], turn["text"])
+                turn["emotion"] = get_emotion_from_gpt(dialog["conversation"][i - 1]["text"], turn["text"])
