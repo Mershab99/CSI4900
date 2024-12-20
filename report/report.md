@@ -116,7 +116,15 @@ _placeholder_
 ## 3.3 Development of a Demonstration Application  
 
 ### 3.3.1 Demo Design Goals  
-_placeholder_
+
+1. **Simplicity**  
+   The demo aims to provide a straightforward and intuitive user interface that makes it easy for users to interact with the models. By focusing on a conversational paradigm, users can naturally input text and observe the corresponding emotional insights and cause-pair relationships.  
+
+2. **Reproducibility**  
+   To ensure that the demo can be easily reproduced and deployed in different environments, it is packaged as a Helm chart for Kubernetes. This approach simplifies the deployment process, allowing users to spin up the application in a cloud or local environment with minimal setup effort.  
+
+3. **Showcasing the Emotion-Cause Pair Extraction**  
+   The demo highlights the unique capability of identifying emotion-cause pairs within text. By leveraging a conversational interface, the system dynamically demonstrates how emotions are detected and linked to their causes, providing an engaging and educational experience.  
 
 ### 3.3.2 Integration of Emotion and Cause-Pair Models  
 _placeholder_
